@@ -1,0 +1,16 @@
+{
+  "name": "@vue/reactivity",
+  "description": "响应式系统",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "module": "dist/reactivity.esm-bundler.js",
+  "buildOptions": {
+    "name": "Reactivity",
+    "formats": [
+      "esm-bundler",
+      "cjs",
+      "global"
+    ]
+  }
+}
