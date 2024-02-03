@@ -1,0 +1,35 @@
+<!--
+ * @FilePath: /my-vue/packages/reactivity/examples/reactive.html
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../dist/reactivity.global.js"></script>
+    <script>
+      const { reactive, effect } = Reactivity;
+      const obj = { a: 123, b: { b1: 123 } };
+      const r = reactive(obj);
+      console.log(r.b);
+      console.log(r);
+      effect(() => {
+        app.innerHTML = r.a;
+      });
+      setTimeout(() => {
+        r.a = 456;
+      }, 1000);
+      // const proxy = new Proxy(obj, {
+      //   get(target, key, receiver) {
+      //     console.log(target, key, receiver);
+      //     return Reflect.get(target, key, receiver);
+      //   },
+      // });
+      // console.log(proxy.a);
+    </script>
+  </body>
+</html>

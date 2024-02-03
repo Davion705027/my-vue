@@ -9,7 +9,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "node scripts/build"
+    "build": "node scripts/build",
+    "dev": "node scripts/dev"
   },
   "dependencies": {},
   "devDependencies": {
