@@ -1,4 +1,4 @@
-import { test, expect }  from "vitest";
+import { test, expect, vi }  from "vitest";
 import { reactive } from "../core/reactive";
 import { effect } from "../core/effect";
 
@@ -43,4 +43,30 @@ test("should observe nested properties", () => {
     expect(dummy).toBe(0);
     counter.nested.num = 8;
     expect(dummy).toBe(8);
+  });
+
+  test("scheduler", () => {
+    let dummy;
+    let run;
+    const scheduler = vi.fn(() => {
+      run = runner;
+    });
+    const obj = reactive({ foo: 1 });
+    const runner = effect(
+      () => {
+        dummy = obj.foo;
+      },
+      { scheduler }
+    );
+    expect(scheduler).not.toHaveBeenCalled();
+    expect(dummy).toBe(1);
+    // should be called on first trigger
+    obj.foo++;
+    expect(scheduler).toHaveBeenCalledTimes(1);
+    // // should not run yet
+    expect(dummy).toBe(1);
+    // // manually run
+    run();
+    // // should have run
+    expect(dummy).toBe(2);
   });
