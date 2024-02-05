@@ -1,4 +1,5 @@
-import { activceFffect } from "./effect"
+import { activceFffect, effect } from "./effect"
+import { isObject } from "./utils"
 
 const targetMap = new WeakMap()
 export function reactive(target){
@@ -6,6 +7,10 @@ export function reactive(target){
         get(target,key,receiver){
             const res = Reflect.get(target,key,receiver)
             track(target,key)
+            
+            if(isObject(res)){
+                return reactive(res)
+            }
             return res
         },
         set(target,key,value,receiver){
@@ -36,7 +41,7 @@ export function trigger(target,key){
     if(!depsMap) return
     const deps = depsMap.get(key)
     
-    deps.forEach(fn=>{
-        fn()
+    deps.forEach(effect=>{
+        effect.run()
     })
 }
