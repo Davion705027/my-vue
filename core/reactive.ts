@@ -34,7 +34,10 @@ export function track(target,key){
         depsMap.set(key,dep)
     }
     if(!activceFffect)return
+
+    if(dep.has(activceFffect)) return
     dep.add(activceFffect)
+    activceFffect.deps.push(dep)
 }
 export function trigger(target,key){
     const depsMap = targetMap.get(target)

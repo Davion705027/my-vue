@@ -13,8 +13,10 @@ export function effect(fn,options = {}){
 }
 
 export class ReactiveEffect{
+    active = true;
+    deps:Set<ReactiveEffect>[] = [];
+    public onStop?:()=>void;
     constructor(public fn,public scheduler?){
-
     }
 
     run(){
@@ -22,4 +24,20 @@ export class ReactiveEffect{
         this.fn()
         activceFffect = null;
     }
+    
+    // 停止收集依赖 需要找到当前effect的deps遍历删除this
+    stop(){
+        if(!this.active)return
+        this.deps.forEach(dep=>{
+            dep.delete(this)
+        })
+        if(this.onStop){
+            this.onStop()
+        }
+        this.active = true
+    }
+}
+
+export function stop(runner){
+    runner.effect.stop(runner)
 }
